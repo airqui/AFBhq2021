@@ -1,6 +1,6 @@
 
 process=$1
-folder="/lustre/ific.uv.es/prj/gl/abehep.flc/ILD/"${process}"/"
+folder="/lustre/ific.uv.es/prj/ific/flc/ntuples-250GeV-2023/"${process}"/"
 local=$PWD
 counter=0
 
@@ -21,7 +21,7 @@ do
     fi
 
 
-    for cuts in 0 6 20
+    for cuts in 0 
     do
 
 	cat > ${local}/steer/qcd_${process}_${name}_cuts${cuts}.sh <<EOF
@@ -42,7 +42,7 @@ queue 1
 EOF
 	if [ -f ${local}/output/QCDcorrelations_cuts${cuts}_${process}_file_${name}.root ];
         then
-         echo "Skip ${process}_${name}_cuts${cuts}"
+            echo "Skip ${process}_${name}_cuts${cuts}"
         else	
 	    condor_submit ${local}/steer/qcd_${process}_${name}_cuts${cuts}.sub
 	fi

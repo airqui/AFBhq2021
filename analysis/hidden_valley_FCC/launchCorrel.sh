@@ -1,0 +1,5 @@
+source test_QCDcorrelations_HV.sh HV_qv100GeV 
+source test_QCDcorrelations_HV.sh HV_qv50GeV 
+source test_QCDcorrelations_HV.sh HV_qv10GeV 
+source test_QCDcorrelations_HV.sh qqSM
+source test_QCDcorrelations_HV.sh ISR

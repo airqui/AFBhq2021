@@ -26,19 +26,34 @@
 #include "../hidden_cross_sections.h"
 #include "histograms.h"
 
-void plotsReco( int cuts = 0, float lum = 900)
+void plotsReco_1D( int cuts = 0, float lum = 900)
 {
 
-  folder = TString::Format("../results_cut6_npfo22_nchpfo15/selection_cuts%i", cuts);
+  folder = TString::Format("../results_FCC/selection_cuts%i", cuts);
 
-  //-------------------------------
+  /*  //-------------------------------
   // 1d histograms to be plotted.. they have to exist in the selection_XXX.root file
   std::vector<TString> histonames = {"h_mjj"};//, "h_mj1_mj2", "h_y23", "h_d23", "h_thrust", "h_major_thrust", "h_minor_thrust","h_sphericity"};
   //labels
+
   TString histo1d_titles[] = {
     "",
-    "M_{j_{1}j_{2}} [GeV]"};
+    "M_{j_{1}j_{2}} [GeV]"};*/
   
+  std::vector<TString> histonames = {"h_mjj", "h_mj1_mj2", "h_y23", "h_d23", "h_thrust", "h_major_thrust", "h_minor_thrust","h_sphericity"};
+  //labels
+  TString histo1d_titles[] = {
+      "",
+      "M_{j_{1}j_{2}} [GeV]",
+      "M_{j_{1}}+M_{j_{2}} [GeV]",
+      "y23",
+      "d23 [GeV]",
+      "T-principle",
+      "T-major",
+      "T-minor",
+      "sphericity"};
+
+
   std::vector<std::vector<TH1F *>> h1_bkg;
 
   for (int isample = 0; isample < sizeof(samples) / sizeof(TString)-1; isample++)
@@ -121,11 +136,15 @@ void plotsReco( int cuts = 0, float lum = 900)
 	      h1_bkg.at(j).at(k)->SetFillStyle(3003);
 	    }
 	  
-	  h1_bkg.at(j).at(k)->Draw("histosame");
+	  // h1_bkg.at(j).at(k)->Draw("histosame");
 
 	  if (j<h1_bkg.size()-1) leg->AddEntry(h1_bkg.at(j).at(k), "#font[42]{" + title_samples[j] + "}", "l");
 	  else leg->AddEntry(h1_bkg.at(j).at(k), "#font[42]{" + title_samples[j] + "}", "f");
 	}
+
+      h1_bkg.at(h1_bkg.size()-1).at(k)->Draw("histo");
+      for (int j = 0; j < h1_bkg.size()-1; j++)    h1_bkg.at(j).at(k)->Draw("histosame");
+
       leg->SetFillStyle(0);
       leg->SetLineWidth(0);
       leg->SetLineColor(0);
@@ -133,13 +152,107 @@ void plotsReco( int cuts = 0, float lum = 900)
 
       LabelsReco();
       leg->Draw();
-      canvas1->Print(TString::Format("plots/%s.eps",histonames[k-1].Data()));
+      canvas1->Print(TString::Format("plots/cut%i_%s.eps",cuts,histonames[k-1].Data()));
     }
 
 
 
 
-}    
+}
+
+
+void plotsReco_2D( int cuts = 0, float lum = 900)
+{
+
+  folder = TString::Format("../results_FCC/selection_cuts%i", cuts);
+
+  TString samples2[] = {
+  "HV_240_mDv120_mqv100",
+  "ISR_240"};
+
+
+  TString title_samples2[] = {
+  "#font[12]{m_{D_{v}}= 120 GeV, m_{q_{v}}=100 GeV}",
+  "SM"};
+
+  //-------------------------------
+  // 2d histograms to be plotted
+  std::vector<TString> histonames_2d = {"h_nch", "h_npfos", "h_costheta_energy", "h_mjjmin_mjjmax", "h_major_minor_thrust","h_ChargedMomDiff_ChargedMomSum","h_Emin_Emax","h_nvtx1_nvtx2"};
+
+  //labels to be added to the 2d plots
+  TString histo2d_titles_x[] = {
+				"# tracks j_{1}",
+      "# pfos j_{1}",
+      "|cos #theta| most energetic #gamma_{cand}",
+      "m_{jj}^{min} [GeV] (4-jet reco)",
+      "T-major",
+      "MomCharged / MomAll (jet1)",
+      "Min. Jet Energy",
+      "nvtx1"
+      };
+
+  TString histo2d_titles_y[] = {
+				"# tracks j_{2}",
+      "# pfos j_{2}",
+      "E most energetic #gamma_{cand} [GeV]",
+      "m_{jj}^{max} [GeV] (4-jet reco)",
+      "T-minor",
+      "MomCharged / MomAll (jet2)",
+      "Max. Jet Energy",
+      "nvtx2"
+      };
+
+   std::vector<TString> histonames = {"h_mjj", "h_mj1_mj2", "h_y23", "h_d23", "h_thrust", "h_major_thrust", "h_minor_thrust","h_sphericity"};
+  //labels
+  TString histo1d_titles[] = {
+      "",
+      "M_{j_{1}j_{2}} [GeV]",
+      "M_{j_{1}}+M_{j_{2}} [GeV]",
+      "y23",
+      "d23 [GeV]",
+      "T-principle",
+      "T-major",
+      "T-minor",
+      "sphericity"};
+
+
+  std::vector<std::vector<TH1F *>> h1_bkg;
+  std::vector<std::vector<TH2F *>> h2_bkg;
+
+  for (int isample = 0; isample < sizeof(samples2) / sizeof(TString); isample++)
+  {
+    std::vector<TH2F *> h2_bkg_temp = GetHisto2D(samples2[isample], lum, histonames_2d,false);
+    h2_bkg.push_back(h2_bkg_temp);
+    std::vector<TH1F *> h1_bkg_temp = GetHisto1D(samples2[isample], lum, histonames);
+    h1_bkg.push_back(h1_bkg_temp);
+  }
+
+  SetQQbarStyle();
+  TGaxis::SetMaxDigits(3);
+
+ 
+  for (int k = 0; k < sizeof(histo2d_titles_y) / sizeof(TString); k++)
+  {
+
+    gStyle->SetPadRightMargin(0.2);
+    TCanvas *canvas1 = new TCanvas(TString::Format("canvas2d_%i", k), TString::Format("canvas2d_%i", k), 1200, 600);
+    canvas1->Divide(2, 1);
+   
+    for (int j = 0; j < h2_bkg.size(); j++)
+    {
+      canvas1->cd(j + 1);
+      gPad->SetLogz();
+      h2_bkg.at(j).at(k)->GetXaxis()->SetTitle(histo2d_titles_x[k]);
+      h2_bkg.at(j).at(k)->GetYaxis()->SetTitle(histo2d_titles_y[k]);
+      h2_bkg.at(j).at(k)->Draw("colz");
+      QQBARLabel2(0.2, 0.85, TString::Format("#font[42]{%s, N_{total}=%i}", samples2[j].Data(), int(h1_bkg.at(j).at(1)->Integral())), kRed,0.04);
+
+      Labels();
+      canvas1->Print(TString::Format("plots/cut%i_2D_%s.eps",cuts,histonames_2d[k].Data()));
+    }
+  }
+}
+
 void selection_plots()
 {
 
@@ -149,7 +262,8 @@ void selection_plots()
   for (int cuts = 6; cuts < 7; cuts++)
     {
       cout << cuts << " ";
-      plotsReco(cuts,lum);
+      plotsReco_1D(cuts,lum);
+      //plotsReco_2D(cuts,lum);
       // plotsProcLCWS2023(cuts);
     
     }

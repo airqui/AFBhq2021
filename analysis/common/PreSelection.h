@@ -3,12 +3,12 @@
 //  bbmass:  
 double bbmasscut=140;
 //  npfos:  
-double NPFOS_cut=1.;
+double NPFOS_cut=10.;
 // n charged_npfos:
 double CNPFOS_cut=1.0;
 // LOS LIMITES DEL CORTE en h_e_costheta_gamma:cuts in energy and angle of detected photons
-double costheta_isr=0.97;
-double energy_isr_cut=115;
+double costheta_isr=0.9;
+double energy_isr_cut=70;
 // cuts in y23
 double y23cut=0.025;
 // ----------------------------------
@@ -216,15 +216,15 @@ bool PreSelection(int type=0, float acolcut=0.3) {
    /* cut_[3]=(cut_[2] && npfo_charge[0]>CNPFOS_cut && npfo_charge[1]>CNPFOS_cut); */
    /* cut_[4]=(cut_[3] && npfo[0]>NPFOS_cut && npfo[1]>NPFOS_cut); */
    //   cut_[1]=( npfo[0]>NPFOS_cut && npfo[1]>NPFOS_cut && npfo_charge[0]>CNPFOS_cut && npfo_charge[1]>CNPFOS_cut);
-   cut_[1]=( npfo[0]>NPFOS_cut && npfo[1]>NPFOS_cut);
+   cut_[1]=( npfo[0]<NPFOS_cut && npfo[1]<NPFOS_cut);
    cut_[2]=( cut_[1] &&  fabs(photonjet_cos_max)<costheta_isr && photonjet_e_max<energy_isr_cut ) ;
-   cut_[3]=( cut_[2] && acol_value<acolcut );
+   //cut_[3]=( cut_[2] && acol_value<acolcut );
    //cut_[4]=( cut_[3] ); //do not apply the Kreco cut
-   cut_[4]=( cut_[3] && bbmass>bbmasscut ) ;
-   cut_[5]=( cut_[4] && d23>0.5 && d23/pow(bbmass,2)<y23cut );
+   //cut_[4]=( cut_[3] && bbmass>bbmasscut ) ;
+   //cut_[5]=( cut_[4] && d23>0.5 && d23/pow(bbmass,2)<y23cut );
    
-   cut_[6]=(cut_[5] && jet_btag[0]>btag1 && jet_btag[1]>btag2);
-   cut_[7]=(cut_[5] && jet_ctag[0]>ctag1 && jet_ctag[1]>ctag2);
+   //cut_[6]=(cut_[5] && jet_btag[0]>btag1 && jet_btag[1]>btag2);
+   //cut_[7]=(cut_[5] && jet_ctag[0]>ctag1 && jet_ctag[1]>ctag2);
    return cut_[type];
 
 

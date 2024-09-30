@@ -3,14 +3,14 @@
 //  bbmass:
 double bbmasscut = 50;
 //  npfos:
-double NPFOS_cut = 2.;
+double NPFOS_cut = 15.;
 //total number of pfos
 double NPFOS_tot_cut = 25;
 // n charged_npfos:
 double CNPFOS_cut = 1.0;
 // LOS LIMITES DEL CORTE en h_e_costheta_gamma:cuts in energy and angle of detected photons
-double costheta_isr = 0.7;
-double energy_isr_cut = 60;
+double costheta_isr = 0.9;
+double energy_isr_cut = 70;
 // cuts in y23
 double y23cut = 0.05;
 
@@ -164,11 +164,12 @@ float AcolValue()
 }
 
 // calculation of photon related quantities
-double npfo[2] = {-1};
-double npfo_photon[2] = {-1};
-double npfo_charge[2] = {-1};
+double npfo[2] = {0};
+double npfo_photon[2] = {0};
+double npfo_charge[2] = {0};
+double E_charge[2] = {0};
 double photonjet_E[2] = {0};
-double photonjet_costheta[2] = {-2};
+double photonjet_costheta[2] = {0};
 
 void PFOphotonQuantities()
 {
@@ -179,6 +180,7 @@ void PFOphotonQuantities()
     npfo_photon[i_] = 0;
     npfo_charge[i_] = 0;
     photonjet_E[i_] = 0;
+    E_charge[i_] = 0;
     photonjet_costheta[i_] = -2;
   }
 
@@ -206,8 +208,10 @@ void PFOphotonQuantities()
 
     npfo[pfo_match[ipfo]]++;
 
-    if (pfo_charge[ipfo] != 0 && pfo_ntracks[ipfo] == 1)
+    if (pfo_charge[ipfo] != 0 && pfo_ntracks[ipfo] == 1) {
       npfo_charge[pfo_match[ipfo]]++;
+      E_charge[pfo_match[ipfo]]+=pfo_E[ipfo];
+    }
 
     // pfo identified as photon or neutron
     if (pfo_type[ipfo] == 22 || fabs(pfo_type[ipfo]) == 2112)
@@ -243,7 +247,7 @@ void PFOphotonQuantities()
   photonjet_costheta[1] = GetCostheta(p_pfo_1);
 }
 
-bool PreSelection(int type = 0, float Kvcut = 25, float acolcut = 0.3)
+bool PreSelection(int type = 2, float Kvcut = 25, float acolcut = 0.3)
 {
 
   if (jet_E[0] < 0.5 || jet_E[1] < 0.5)
@@ -278,23 +282,23 @@ bool PreSelection(int type = 0, float Kvcut = 25, float acolcut = 0.3)
 
   //----------------------------------------------------------
   bool cut_[10] = {false};
-  cut_[0] = true;
+   cut_[0] = true;
   /* cut_[1]=( Kv < Kvcut && acol_value<0.15); */
   /* cut_[2]=(cut_[1] && bbmass>bbmasscut ) ;  */
   /* cut_[3]=(cut_[2] && npfo_charge[0]>CNPFOS_cut && npfo_charge[1]>CNPFOS_cut); */
   /* cut_[4]=(cut_[3] && npfo[0]>NPFOS_cut && npfo[1]>NPFOS_cut); */
   //   cut_[1]=( npfo[0]>NPFOS_cut && npfo[1]>NPFOS_cut && npfo_charge[0]>CNPFOS_cut && npfo_charge[1]>CNPFOS_cut);
-  cut_[1] = (npfo[0] > NPFOS_cut && npfo[1] > NPFOS_cut);
+  cut_[1] = (npfo[0] < NPFOS_cut && npfo[1] < NPFOS_cut);
   cut_[2] = (cut_[1] && fabs(photonjet_cos_max) < costheta_isr && photonjet_e_max < energy_isr_cut);
   // cut_[3]=( cut_[2] && acol_value<acolcut );
   // cut_[3]=( cut_[2] && Kv < Kvcut);
-  cut_[3] = (cut_[2] && bbmass < bbmasscut);
-  cut_[4] = (cut_[3] && (npfo[0] + npfo[1])<NPFOS_tot_cut );
-  //cut_[5] = (cut_[4] && major_thrust_value>0.5);
-  cut_[5] = (cut_[4] && d23/pow(bbmass,2)<y23cut && d23>0 );
-  cut_[6] = (cut_[5] && (npfo_charge[0]>1 && npfo_charge[0]<8) && (npfo_charge[1]>1 && npfo_charge[1]<8) );
-  cut_[7] = (cut_[6] &&   principle_thrust_value > 0.7);
-  cut_[8] = (cut_[6] &&   principle_thrust_value > 0.9);
+  //  cut_[3] = (cut_[2] && bbmass < bbmasscut);
+  // cut_[4] = (cut_[3] && (npfo[0] + npfo[1])<NPFOS_tot_cut );
+ //cut_[5] = (cut_[4] && major_thrust_value>0.5);
+  // cut_[5] = (cut_[4] && d23/pow(bbmass,2)<y23cut && d23>0 );
+  //cut_[6] = (cut_[5] && (npfo_charge[0]>1 && npfo_charge[0]<8) && (npfo_charge[1]>1 && npfo_charge[1]<8) );
+  //cut_[7] = (cut_[6] &&   principle_thrust_value > 0.7);
+  //cut_[8] = (cut_[6] &&   principle_thrust_value > 0.9);
 
  // cut_[4] = (cut_[3] && principle_thrust_value < thrust_cut);
   std::vector<float> mw1mw2=MW1_MW2();

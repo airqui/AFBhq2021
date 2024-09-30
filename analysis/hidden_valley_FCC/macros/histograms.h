@@ -1,24 +1,31 @@
-TString folder = "../results_new/";
+TString folder = "../results_FCC/";
 
 
-TString samples[] = {"HV_qv100GeV",
-  "HV_qv50GeV",
-  "HV_qv10GeV",
-  "HV_qv0GeV",
-  "eetoDvDvbar_m100",
-  "eetoDvDvbar_m80",
-  "ISR",
-  "qqSM"};
+TString samples[] = {
+  "HV_240_mDv120_mqv100",
+  "HV_240_mDv120_mqv60",
+  "HV_240_mDv120_mqv10",
+  "HV_240_mDv100_mqv50",
+  "ISR_240",
+  "qqSM_240"};
 
 
 TString title_samples[] = {
-  "#font[12]{m_{D_{v}}= 125 GeV, m_{q_{v}}=100 GeV}",
-  "#font[12]{m_{D_{v}}= 125 GeV, m_{q_{v}}= 50 GeV}",
-  "#font[12]{m_{D_{v}}= 125 GeV, m_{q_{v}}= 10 GeV}",
-  "#font[12]{m_{D_{v}}= 125 GeV, m_{q_{v}}=  0.1 GeV}",
+  "#font[12]{m_{D_{v}}= 120 GeV, m_{q_{v}}=100 GeV}",
+  "#font[12]{m_{D_{v}}= 120 GeV, m_{q_{v}}= 60 GeV}",
+  "#font[12]{m_{D_{v}}= 120 GeV, m_{q_{v}}= 10 GeV}",
   "#font[12]{m_{D_{v}}= 100 GeV, m_{q_{v}}= 50 GeV}",
-  "#font[12]{m_{D_{v}}=  80 GeV, m_{q_{v}}= 40 GeV}",
   "SM"};
+
+
+// NOT USED --->
+TString samples2[] = {
+  "ISR_240",
+  "ISR"};                                                                                                                                                                                                                                                                                                                                                                                  
+TString title_samples2[] = { 
+  "qqbar+ISR-240GeV, FCCdet",
+  "qqbar+ISR-250GeV, ILCdet"};
+//< --- NOT USED
 
 void Labels()
 {
@@ -32,7 +39,7 @@ void LabelsReco(Double_t textsize=0.03)
 {
 
   //QQBARLabel(ildx, 0.953, "");
-  QQBARLabel2(0.04, 0.04,"Pythia8+SGV (ILC detector)", kOrange + 3,textsize);
+  QQBARLabel2(0.04, 0.04,"Pythia8+SGV (FCC240, ILD-for-FCC detector)", kOrange + 3,textsize);
 
 }
 

@@ -1,0 +1,23 @@
+std::vector<std::pair<TString,double> > cross_section_pairs
+ {
+   {"qqSM_unpol",12200},
+     {"ISR_unpol",48000},
+       {"VBF_unpol",7400},
+	 {"HV_qv100GeV_unpol",119.9},
+	   {"HV_qv50GeV_unpol",124.3},
+	     {"HV_qv10GeV_unpol",124.4},
+	       {"HV_qv0GeV_unpol",124.4},
+		 {"qqbar_Herwig_unpol",12200},
+		   {"qqbar_Pythia_unpol",12200},
+		     {"eetoDvDvbar_m62.5_unpol",1609},
+		       {"eetoDvDvbar_m100_unpol",1296},
+		        {"eetoDvDvbar_m80_unpol",1573},
+			  {"eetoZv_m62.5_unpol",34640},
+			    {"ww_240_unpol",7400},
+			      {"ISR_240_unpol",52660},
+				{"HV_240_mDv120_mqv100_unpol",129},
+				  {"HV_240_mDv120_mqv60_unpol",136},
+				    {"HV_240_mDv120_mqv10_unpol",136},
+				      {"HV_240_mDv100_mqv50_unpol",1380},
+					{"qqSM_240_unpol",13430}
+ };

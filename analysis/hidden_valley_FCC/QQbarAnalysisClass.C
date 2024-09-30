@@ -5,7 +5,7 @@
 void QQbarAnalysisClass::SelectionParticleLevel(int n_entries = -1, int cut = 0)
 {
 
-  TFile *MyFile = new TFile(TString::Format("/lhome/ific/a/airqui/QQbar/testsEM/analysis/hidden_valley/output/selectionPL_%s.root", process.Data()), "RECREATE");
+  TFile *MyFile = new TFile(TString::Format("/lhome/ific/m/musumeci/AFBhq2021-HV_250GeV/analysis/hidden_valley/output/selectionPL_%s.root", process.Data()), "RECREATE");
   MyFile->cd();
 
   // costheta_nocuts
@@ -128,7 +128,7 @@ void QQbarAnalysisClass::SelectionParticleLevel(int n_entries = -1, int cut = 0)
 void QQbarAnalysisClass::Selection(int n_entries = -1, int cut = 0)
 {
 
-  TFile *MyFile = new TFile(TString::Format("/lhome/ific/a/airqui/QQbar/testsEM/analysis/hidden_valley/output/selection_%s.root", process.Data()), "RECREATE");
+  TFile *MyFile = new TFile(TString::Format("/lhome/ific/m/musumeci/AFBhq2021-HV_250GeV/analysis/hidden_valley/output/selection_%s.root", process.Data()), "RECREATE");
   MyFile->cd();
 
   // costheta_nocuts
@@ -141,7 +141,6 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int cut = 0)
   TH1F *h_major_thrust = new TH1F("h_major_thrust", "h_major_thrust", 100, 0, 1);
   TH1F *h_minor_thrust = new TH1F("h_minor_thrust", "h_minor_thrust", 100, 0, 1);
   TH2F *h_major_minor_thrust = new TH2F("h_major_minor_thrust", "h_major_minor_thrust", 100, 0, 1, 100, 0, 1);
-  TH1F *h_mjj_v2 = new TH1F("h_mjj_v2", "h_mjj_v2", 100, 0, 500);
   TH2F *h_costheta_energy = new TH2F("h_costheta_energy", "h_costheta_energy", 100, 0, 1, 150, 0.5, 150.5);
   TH2F *h_npfos = new TH2F("h_npfos", "h_npfos", 101, -0.5, 100.5, 101, -0.5, 100.5);
   TH2F *h_nch = new TH2F("h_nch", "h_nch", 101, -0.5, 100.5, 101, -0.5, 100.5);
@@ -149,16 +148,6 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int cut = 0)
   TH1F *h_mj1_mj2 = new TH1F("h_mj1_mj2", "h_mj1_mj2", 400, 0, 200);
   TH2F *h_mjjmin_mjjmax = new TH2F("h_mjjmin_mjjmax", "h_mjjmin_mjjmax", 201, -0.5, 200.5, 201, -0.5, 200.5);
   TH2F *h_npfos_minv = new TH2F("h_npfos_minv", "h_npfos_minv", 101, -0.5, 100.5, 100, 0, 500);
-
-  //new  distributions, 20230911
-  TH1F *h_sphericity = new TH1F("h_sphericity", "h_sphericity", 100, 0, 1);
-  TH2F *h_btag1_btag2 = new TH2F("h_btag1_btag2", "h_btag1_btag2", 100, 0, 1,100,0,1);
-  TH2F *h_ctag1_ctag2 = new TH2F("h_ctag1_ctag2", "h_ctag1_ctag2", 100, 0, 1,100,0,1);
-  TH2F *h_nvtx1_nvtx2 = new TH2F("h_nvtx1_nvtx2", "h_nvtx1_nvtx2", 3, -0.5, 2.5,3,-0.5,3);
-  TH2F *h_EchgFrac1_EchgFrac2 = new TH2F("h_EchgFrac1_EchgFrac2", "h_EchgFrac1_EchgFrac2", 100, 0, 1,100,0,1);
-  TH2F *h_Emin_Emax = new TH2F("h_Emin_Emax", "h_Emin_Emax", 125, 0, 125,125,0,125);
-  TH2F *h_ChargedMomDiff_ChargedMomSum = new TH2F("h_ChargedMomDiff_ChargedMomSum", "h_ChargedMomDiff_ChargedMomSum", 125, 0, 125,125,0,125);
-
 
   Long64_t nentries;
   if (n_entries > 0)
@@ -177,20 +166,6 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int cut = 0)
 
     if (jentry > 1000 && jentry % 1000 == 0)
       std::cout << "Progress: " << 100. * jentry / nentries << " %" << endl;
-      // Calculate minv_pfos
-    float pxtot_ = 0, pytot_ = 0, pztot_ = 0, etot_ = 0;
-      
-    float  minv_pfos = 0;
-
-    for (int ipfo = 0; ipfo < pfo_n; ipfo++) {
-           pxtot_ += pfo_px[ipfo];
-           pytot_ += pfo_py[ipfo];
-           pztot_ += pfo_pz[ipfo];
-           etot_ += pfo_E[ipfo];
-         }
-
-    minv_pfos = sqrt(pow(etot_, 2) - pow(pxtot_, 2) - pow(pytot_, 2) - pow(pztot_, 2));
-
 
     // reco stuff
     double reco_b1mass = sqrt(pow(jet_E[0], 2) - pow(jet_px[0], 2) - pow(jet_py[0], 2) - pow(jet_pz[0], 2));
@@ -231,7 +206,7 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int cut = 0)
     std::vector<float> mw1mw2 = MW1_MW2();
 
     // HASTA AQUI Las cosas de PFOs
-    h_mjj_v2->Fill(minv_pfos);
+
     h_mjj->Fill(recomass);
     h_npfos->Fill(npfo[0], npfo[1]);
     h_nch->Fill(npfo_charge[0], npfo_charge[1]);
@@ -248,22 +223,6 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int cut = 0)
     h_mjjmin_mjjmax->Fill(mw1mw2.at(0), mw1mw2.at(1));
 
     h_npfos_minv->Fill(npfo[0] + npfo[1], recomass);
-
-    h_sphericity->Fill(sphericity);
-    h_btag1_btag2->Fill(jet_btag[0],jet_btag[1]);
-    h_ctag1_ctag2->Fill(jet_ctag[0],jet_ctag[1]);
-    h_nvtx1_nvtx2->Fill(jet_nvtx_j1,jet_nvtx_j2);
-    h_EchgFrac1_EchgFrac2->Fill(p_charge[0]/jet_E[0],p_charge[1]/jet_E[1]);
-    float emin=jet_E[0];
-    float emax=jet_E[1];
-    if(jet_E[1]<emin) {
-      emin=jet_E[1];
-      emax=jet_E[0];
-    }
-    h_Emin_Emax->Fill(emin,emax);
-
-    h_ChargedMomDiff_ChargedMomSum->Fill(fabs(p_charge[0]-p_charge[1]),p_charge[0]+p_charge[1]);
-
   }
 
   cout << TString::Format("selection_%s.root", process.Data()) << endl;
@@ -283,25 +242,16 @@ void QQbarAnalysisClass::Selection(int n_entries = -1, int cut = 0)
   h_major_minor_thrust->Write();
 
   h_mj1_mj2->Write();
-  h_mjj_v2->Write();
 
   h_costheta_energy->Write();
   h_mjjmin_mjjmax->Write();
   h_npfos_minv->Write();
-
-  h_sphericity->Write();
-  h_btag1_btag2->Write();
-  h_ctag1_ctag2->Write();
-  h_nvtx1_nvtx2->Write();
-  h_EchgFrac1_EchgFrac2->Write();
-  h_Emin_Emax->Write();
-  h_ChargedMomDiff_ChargedMomSum->Write();
 }
 
 void QQbarAnalysisClass::QCDCorr(int n_entries = -1, int cut = 0)
 {
 
-  TString name = TString::Format("/lhome/ific/a/airqui/QQbar/testsEM/analysis/hidden_valley/output/QCDcorrelations_%s.root", process.Data());
+  TString name = TString::Format("/lhome/ific/m/musumeci/AFBhq2021-HV_250GeV/analysis/hidden_valley/output/QCDcorrelations_%s.root", process.Data());
 
   TFile *MyFile = new TFile(name, "RECREATE");
   MyFile->cd();
@@ -344,7 +294,6 @@ void QQbarAnalysisClass::QCDCorr(int n_entries = -1, int cut = 0)
       std::cout << "Progress: " << 100. * jentry / nentries << " %" << endl;
 
     // parte importante
-    h_costheta_nocuts->Fill(0.5);
     bool selection = PreSelection(cut);
     if (cut == -1)
       selection = PreSelectionPL(-1);

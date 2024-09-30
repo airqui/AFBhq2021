@@ -1,6 +1,6 @@
 
 process=$1
-folder="/lustre/ific.uv.es/prj/gl/abehep.flc/ILD/ntuples-250GeV-2023/"${process}"/"
+folder="/lustre/ific.uv.es/prj/ific/flc/ntuples-250GeV-2023/"${process}"/"
 local=$PWD
 counter=0
 
@@ -21,13 +21,13 @@ do
     fi
 
 
-    for cuts in 0 1 2 3 4 5 6 20
+    for cuts in 2
     do
 
 	cat > ${local}/steer/sel_${process}_${name}_cuts${cuts}.sh <<EOF
 source ${local}/../init_ilcsoft.sh
 root -l -q ${local}/test_selection.cc\(\"${file}\",\"${process}\",${counter},${cuts}\) > ${local}/output/log_sel_${process}_${name}_cuts${cuts}
-mv selection*cut_${process}_file_${name}.root ${local}/output/.
+mv selection*cuts${cuts}_${process}_file_${name}.root ${local}/output/.
 EOF
 	
 	cat > ${local}/steer/sel_${process}_${name}_cuts${cuts}.sub <<EOF
@@ -41,12 +41,12 @@ should_transfer_files   = Yes
 when_to_transfer_output = ON_EXIT
 queue 1
 EOF
-	if [ -f ${local}/output/selection_cuts${cuts}_${process}_file_${name}.root ];
-        then
-            echo "Skip ${process}_${name}_cuts${cuts}"
-        else	
-         condor_submit ${local}/steer/sel_${process}_${name}_cuts${cuts}.sub
-	fi
+#	if [ -f ${local}/output/selection_cuts${cuts}_${process}_file_${name}.root ];
+  #     then
+    #       echo "Skip ${process}_${name}_cuts${cuts}"
+      #  else	
+	    condor_submit ${local}/steer/sel_${process}_${name}_cuts${cuts}.sub
+ #	fi
     done
 	
     counter=$((counter+1))
