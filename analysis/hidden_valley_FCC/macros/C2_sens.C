@@ -116,7 +116,8 @@ std::vector<TH1F*> v_hyield (  std::vector<std::vector<TH1F *>> h1_signal, std::
 	  for(int ipol=1; ipol<9; ipol++) {
 	    value+=params[ipol]*pow(hyield_temp->GetBinCenter(i),ipol);
 	  }
-	  if(j==nSM) hyield_temp->SetBinContent(i,value);
+	  //	  if(j==nSM) hyield_temp->SetBinContent(i,value);
+	  // uncomment if you want to fit the SM contribution... 
 	}
       }
 
@@ -131,7 +132,9 @@ std::vector<TH1F*> v_hyield (  std::vector<std::vector<TH1F *>> h1_signal, std::
 	  for(int ipol=1; ipol<9; ipol++) {
 	    value+=params[ipol]*pow(hyield_temp->GetBinCenter(i),ipol);
 	  }
-	  if(j==nSM) hyield_temp->SetBinContent(i,value);
+	  //if(j==nSM) hyield_temp->SetBinContent(i,value);
+           // uncomment if you want to fit the SM contribution...    
+
 	}
       }
 
