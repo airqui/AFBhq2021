@@ -15,9 +15,9 @@ std::vector<std::pair<TString,double> > cross_section_pairs
 			  {"eetoZv_m62.5_unpol",34640},
 			    {"ww_240_unpol",7400},
 			      {"ISR_240_unpol",52660},
-				{"HV_240_mDv120_mqv100_unpol",129},
-				  {"HV_240_mDv120_mqv60_unpol",136},
-				    {"HV_240_mDv120_mqv10_unpol",136},
-				      {"HV_240_mDv100_mqv50_unpol",1380},
-					{"qqSM_240_unpol",13430}
+				  {"HV_240_mDv120_mqv100_unpol",129},
+				    {"HV_240_mDv120_mqv60_unpol",136},
+				      {"HV_240_mDv120_mqv10_unpol",136},
+					{"HV_240_mDv100_mqv50_unpol",1380},
+					  {"qqSM_240_unpol",13430}
  };

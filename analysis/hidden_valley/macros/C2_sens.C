@@ -447,7 +447,7 @@ void plots_C2Yield_syst_fragmentation(float lum=2000, int yield=0, double factor
               
         if (j == 5)
           {
-            hyield[j]->SetLineColor(kGreen-2);
+            hyield[j]->SetLineColor(kMagenta);
             hyield[j]->SetLineWidth(3);
             hyield[j]->SetLineStyle(2);
           }
@@ -623,7 +623,7 @@ void plots_C2Yield_syst_fragmentation(float lum=2000, int yield=0, double factor
               
         if (j == 5)
           {
-            g_ratio_yield[j]->SetLineColor(kGreen-2);
+            g_ratio_yield[j]->SetLineColor(kMagenta);
             g_ratio_yield[j]->SetLineWidth(3);
             g_ratio_yield[j]->SetLineStyle(2);
           }
@@ -737,7 +737,7 @@ void C2_sens(int cuts=6)
     }*/
   
   // histos_ref_C2Yield_PRL( 100, folder_0);
-   for(float lum=100; lum<2000; lum+=100) {
+   for(float lum=100; lum<200; lum+=100) {
     for(int i=0; i<2; i++) {
       plots_C2Yield_syst_fragmentation(lum,i,1,1);
       plots_C2Yield_syst_fragmentation(lum,i,0.1,0.1);

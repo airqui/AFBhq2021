@@ -3,7 +3,6 @@ TString folder = "../results_FCC/";
 
 TString samples[] = {
   "HV_240_mDv120_mqv100",
-  "HV_240_mDv120_mqv60",
   "HV_240_mDv120_mqv10",
   "HV_240_mDv100_mqv50",
   "ISR_240",
@@ -12,7 +11,6 @@ TString samples[] = {
 
 TString title_samples[] = {
   "#font[12]{m_{D_{v}}= 120 GeV, m_{q_{v}}=100 GeV}",
-  "#font[12]{m_{D_{v}}= 120 GeV, m_{q_{v}}= 60 GeV}",
   "#font[12]{m_{D_{v}}= 120 GeV, m_{q_{v}}= 10 GeV}",
   "#font[12]{m_{D_{v}}= 100 GeV, m_{q_{v}}= 50 GeV}",
   "SM"};

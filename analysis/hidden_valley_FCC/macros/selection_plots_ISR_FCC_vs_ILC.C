@@ -1,3 +1,4 @@
+
 #include <TPaveStats.h>
 #include <TH2.h>
 #include <TStyle.h>
@@ -40,32 +41,32 @@ void plotsReco_1D( int cuts = 0, float lum = 900)
     "",
     "M_{j_{1}j_{2}} [GeV]"};*/
   
-  std::vector<TString> histonames = {"h_mj1_mj2"};//, "h_mj1_mj2", "h_y23", "h_d23", "h_thrust", "h_major_thrust", "h_minor_thrust","h_sphericity"};
+  std::vector<TString> histonames = {"h_mjj", "h_mj1_mj2", "h_y23", "h_d23", "h_thrust", "h_major_thrust", "h_minor_thrust","h_sphericity"};
   //labels
   TString histo1d_titles[] = {
       "",
-      "M_{j_{1}j_{2}} [GeV]"};
-  /*      "M_{j_{1}}+M_{j_{2}} [GeV]",
+      "M_{j_{1}j_{2}} [GeV]",
+      "M_{j_{1}}+M_{j_{2}} [GeV]",
       "y23",
       "d23 [GeV]",
       "T-principle",
       "T-major",
       "T-minor",
       "sphericity"};
-  */
+
 
   std::vector<std::vector<TH1F *>> h1_bkg;
 
-  for (int isample = 0; isample < sizeof(samples) / sizeof(TString)-1; isample++)
+  for (int isample = 0; isample < sizeof(samples2) / sizeof(TString); isample++)
     {
 
-      std::vector<TH1F *> h1_bkg_temp = GetHisto1D(samples[isample], lum, histonames);
+      std::vector<TH1F *> h1_bkg_temp = GetHisto1D(samples2[isample], lum, histonames);
       h1_bkg.push_back(h1_bkg_temp);
     }
 
   for (int i = 0; i < h1_bkg.size(); i++)
     {
-      cout << samples[i] << ": " << h1_bkg.at(i).at(1)->Integral() << " ";
+      cout << samples2[i] << ": " << h1_bkg.at(i).at(1)->Integral() << " ";
     }
   cout << endl;
 
@@ -76,9 +77,9 @@ void plotsReco_1D( int cuts = 0, float lum = 900)
     {
 
 
-      float xmin = 0.45, ymin = 0.7, xmax = 0.8, ymax = 0.9;
+      float xmin = 0.4, ymin = 0.7, xmax = 0.8, ymax = 0.9;
 
-      TLegend *leg = new TLegend(xmin, 0.7, xmax, 0.9); //(0.4,0.3,0.5,0.6);
+      TLegend *leg = new TLegend(xmin, 0.5, xmax, 0.9); //(0.4,0.3,0.5,0.6);
       leg->SetTextSize(0.035);
 
       TCanvas *canvas1 = new TCanvas(TString::Format("canvas_%i", k), TString::Format("canvas_%i", k), 800, 800);
@@ -138,13 +139,12 @@ void plotsReco_1D( int cuts = 0, float lum = 900)
 	  
 	  // h1_bkg.at(j).at(k)->Draw("histosame");
 
-	  if (j<h1_bkg.size()-1) leg->AddEntry(h1_bkg.at(j).at(k), "#font[42]{" + title_samples[j] + "}", "l");
-	  else leg->AddEntry(h1_bkg.at(j).at(k), "#font[42]{" + title_samples[j] + "}", "f");
+	  if (j<h1_bkg.size()-1) leg->AddEntry(h1_bkg.at(j).at(k), "#font[42]{" + title_samples2[j] + "}", "l");
+	  else leg->AddEntry(h1_bkg.at(j).at(k), "#font[42]{" + title_samples2[j] + "}", "f");
 	}
 
-      h1_bkg.at(0).at(k)->Draw("histo");
-      h1_bkg.at(0).at(k)->GetYaxis()->SetRangeUser(0,h1_bkg.at(0).at(k)->GetMaximum()*1.5);
-      for (int j = 1; j < h1_bkg.size(); j++)    h1_bkg.at(j).at(k)->Draw("histosame");
+      h1_bkg.at(h1_bkg.size()-1).at(k)->Draw("histo");
+      for (int j = 0; j < h1_bkg.size()-1; j++)    h1_bkg.at(j).at(k)->Draw("histosame");
 
       leg->SetFillStyle(0);
       leg->SetLineWidth(0);
@@ -153,7 +153,7 @@ void plotsReco_1D( int cuts = 0, float lum = 900)
 
       LabelsReco();
       leg->Draw();
-      canvas1->Print(TString::Format("plots/cut%i_%s.eps",cuts,histonames[k-1].Data()));
+      canvas1->Print(TString::Format("plots/FCC_vs_ILC_cut%i_%s.eps",cuts,histonames[k-1].Data()));
     }
 
 
@@ -167,23 +167,13 @@ void plotsReco_2D( int cuts = 0, float lum = 900)
 
   folder = TString::Format("../results_FCC/selection_cuts%i", cuts);
 
-  TString samples2[] = {
-    "HV_240_mDv120_mqv100",
-    "HV_240_mDv100_mqv50",
-  "ISR_240"};
-
-
-  TString title_samples2[] = {
-  "#font[12]{m_{D_{v}}= 120 GeV, m_{q_{v}}=100 GeV}",
-  "#font[12]{m_{D_{v}}= 10 GeV, m_{q_{v}}=50 GeV}",
-  "SM"};
 
   //-------------------------------
   // 2d histograms to be plotted
-  std::vector<TString> histonames_2d = {"h_forw_vs_back"};//"h_nch", "h_npfos", "h_costheta_energy", "h_mjjmin_mjjmax", "h_major_minor_thrust","h_forw_vs_back","h_forw_vs_back_2","h_forw_vs_back_3"};
+  std::vector<TString> histonames_2d = {"h_nch", "h_npfos", "h_costheta_energy", "h_mjjmin_mjjmax", "h_major_minor_thrust","h_ChargedMomDiff_ChargedMomSum","h_Emin_Emax","h_nvtx1_nvtx2"};
 
   //labels to be added to the 2d plots
-  TString histo2d_titles_x[] = {"#Sigma E_{pfos}^{forward}"};/*
+  TString histo2d_titles_x[] = {
 				"# tracks j_{1}",
       "# pfos j_{1}",
       "|cos #theta| most energetic #gamma_{cand}",
@@ -193,9 +183,8 @@ void plotsReco_2D( int cuts = 0, float lum = 900)
       "Min. Jet Energy",
       "nvtx1"
       };
-							     */
-  TString histo2d_titles_y[] = {"#Sigma E_{pfos}^{backward}"};
-  /*
+
+  TString histo2d_titles_y[] = {
 				"# tracks j_{2}",
       "# pfos j_{2}",
       "E most energetic #gamma_{cand} [GeV]",
@@ -205,7 +194,7 @@ void plotsReco_2D( int cuts = 0, float lum = 900)
       "Max. Jet Energy",
       "nvtx2"
       };
-  */
+
    std::vector<TString> histonames = {"h_mjj", "h_mj1_mj2", "h_y23", "h_d23", "h_thrust", "h_major_thrust", "h_minor_thrust","h_sphericity"};
   //labels
   TString histo1d_titles[] = {
@@ -239,8 +228,8 @@ void plotsReco_2D( int cuts = 0, float lum = 900)
   {
 
     gStyle->SetPadRightMargin(0.2);
-    TCanvas *canvas1 = new TCanvas(TString::Format("canvas2d_%i", k), TString::Format("canvas2d_%i", k), 1800, 600);
-    canvas1->Divide(3, 1);
+    TCanvas *canvas1 = new TCanvas(TString::Format("canvas2d_%i", k), TString::Format("canvas2d_%i", k), 1200, 600);
+    canvas1->Divide(2, 1);
    
     for (int j = 0; j < h2_bkg.size(); j++)
     {
@@ -252,23 +241,23 @@ void plotsReco_2D( int cuts = 0, float lum = 900)
       QQBARLabel2(0.2, 0.85, TString::Format("#font[42]{%s, N_{total}=%i}", samples2[j].Data(), int(h1_bkg.at(j).at(1)->Integral())), kRed,0.04);
 
       Labels();
-      canvas1->Print(TString::Format("plots/cut%i_2D_%s.eps",cuts,histonames_2d[k].Data()));
+      canvas1->Print(TString::Format("plots/FCC_vs_ILC_cut%i_2D_%s.eps",cuts,histonames_2d[k].Data()));
     }
   }
 }
 
-void selection_plots()
+void selection_plots_ISR_FCC_vs_ILC()
 {
 
   float lum = 100;
   int pol = 0;
   cout << "Events for Polarization " << pol << " (0=left, 1=right, 2=80left,30right, 3=80right,30left) and Lum=" << lum << endl;
-  for (int cuts = 6; cuts < 7; cuts++)
+  for (int cuts = 1; cuts < 2; cuts++)
     {
       cout << cuts << " ";
-      plotsReco_1D(cuts,lum);
-      //plotsReco_2D(cuts,lum);
-      //plotsProcLCWS2023(cuts);
+      //plotsReco_1D(cuts,lum);
+      plotsReco_2D(cuts,lum);
+      // plotsProcLCWS2023(cuts);
     
     }
 }

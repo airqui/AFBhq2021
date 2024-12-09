@@ -146,8 +146,9 @@ void selection_plots()
   float lum = 100;
   int pol = 0;
   cout << "Events for Polarization " << pol << " (0=left, 1=right, 2=80left,30right, 3=80right,30left) and Lum=" << lum << endl;
-  for (int cuts = 6; cuts < 7; cuts++)
+  for (int cuts = 0; cuts < 7; cuts++)
     {
+      if(cuts==1) cuts=6;
       cout << cuts << " ";
       plotsReco(cuts,lum);
       // plotsProcLCWS2023(cuts);

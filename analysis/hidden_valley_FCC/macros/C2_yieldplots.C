@@ -28,7 +28,7 @@
 
 
 int nbkgs=1;
-int nSM=4;//if we study ISR & VBF --> nbkgs=2
+int nSM=3;//if we study ISR & VBF --> nbkgs=2
 
 
 
@@ -237,7 +237,7 @@ void plots_reco_C2Yield_PRL(float lum=2000, bool bkg = false, bool yield=false,T
 	      for(int ipol=1; ipol<9; ipol++) {
 		value+=params[ipol]*pow(hyield[j]->GetBinCenter(i),ipol);
 	      }
-	      //if(cuts==6 && j==nSM) hyield[j]->SetBinContent(i,value);
+	      if(cuts==6 && j==nSM) hyield[j]->SetBinContent(i,value);
 	      //uncomment to add a fit extrapolation of the SM
 	    }
 	  }
@@ -253,7 +253,7 @@ void plots_reco_C2Yield_PRL(float lum=2000, bool bkg = false, bool yield=false,T
 	      for(int ipol=1; ipol<9; ipol++) {
 		value+=params[ipol]*pow(hyield[j]->GetBinCenter(i),ipol);
 	      }
-	      //if(cuts==6 && j==nSM) hyield[j]->SetBinContent(i,value);
+	      if(cuts==6 && j==nSM) hyield[j]->SetBinContent(i,value);
 	      //uncomment to add a fit extrapolation of the SM                                                                                                                                         
 	    }
 	  }
@@ -456,8 +456,8 @@ void C2_yieldplots(int cuts=6)
   TString folder_0 = "../results_FCC/";
 
   
-  plots_reco_C2Yield_PRL( 2000, true, true,folder_0,cuts);
-  //plots_reco_C2Yield_PRL( 2000, true, false,folder_0,cuts);
+  //plots_reco_C2Yield_PRL( 2000, true, true,folder_0,cuts);
+  plots_reco_C2Yield_PRL( 2000, true, false,folder_0,cuts);
 
   //if second argument is false, only one proces is used
   //if it is itrue, S2= S2HV+S2SM using cuts 6

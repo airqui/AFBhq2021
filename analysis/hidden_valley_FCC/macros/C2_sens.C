@@ -28,7 +28,7 @@
 
 
 int nbkgs=1;
-int nSM=4;
+int nSM=3;
 //if we study ISR & VBF --> nbkgs=2
 
 std::vector<TH1F*> v_hyield (  std::vector<std::vector<TH1F *>> h1_signal, std::vector<std::vector<TH2F *>> h2_signal,  std::vector<std::vector<TH2F *>> h2_bkg, int step=0) {

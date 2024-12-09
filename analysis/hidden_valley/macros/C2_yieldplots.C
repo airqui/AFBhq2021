@@ -298,7 +298,7 @@ void plots_reco_C2Yield_PRL(float lum=2000, bool bkg = false, bool yield=false,T
 	      
 	if (j == 5)
 	  {
-	    hyield[j]->SetLineColor(kGreen-2);
+	    hyield[j]->SetLineColor(kMagenta);
 	    hyield[j]->SetLineWidth(3);
 	    hyield[j]->SetLineStyle(2);
 	  }
@@ -448,7 +448,7 @@ void plots_reco_C2Yield_PRL(float lum=2000, bool bkg = false, bool yield=false,T
 
 
 
-void C2_yieldplots(int cuts=6)
+void C2_yieldplots(int cuts=0)
 {
 
   TString folder_0 = "../results_cut6_npfo22_nchpfo15/";
